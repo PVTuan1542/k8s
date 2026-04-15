@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  namespace: learn
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    traefik.ingress.kubernetes.io/router.tls: "false"
+spec:
+  tls:
+    - hosts:
+        - xcall.local
+      secretName: xcall-tls
+  rules:
+    - host: xcall.local
+      http:
+        paths:
+          - path: /api/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: xcall-backend-svc
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: xcall-frontend-svc
+                port:
+                  number: 80

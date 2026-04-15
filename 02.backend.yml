@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xcall-backend
+  namespace: learn
+  labels: 
+    app: xcall-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: xcall-backend
+  template:
+    metadata:
+      labels:
+        app: xcall-backend
+    spec:
+      containers:
+        - name: xcall-backend
+          image: tuan1542/xcall-backend:v1.0.3
+          ports:
+            - containerPort: 80
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: MONGO_URI
+            - name: REDIS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: REDIS_URI
+            - name: PEPPER
+              value: "99d6b7358f9f87ee7d7b391e8f2ce2d5"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: API_KEY
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: API_SECRET
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: JWT_SECRET_KEY
+            - name: JWT_EXPIRES_TIME
+              value: "604800000"
+            - name: IAM_URL
+              value: "https://accounts.vbee.ai"
+            - name: IAM_REALM
+              value: "vbee-holding"
+            - name: IAM_CLIENT_ID
+              value: "mobiva-backend"
+            - name: IAM_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: IAM_CLIENT_SECRET
+            - name: SMD_URL
+              value: "https://api-bot.smartdialog.vn"
+            - name: SMD_MANAGEMENT_URL
+              value: "https://management.smartdialog.vn"
+            - name: SMD_BOT_CONNECTOR_URL
+              value: "wss://chat.smartdialog.vn"
+            - name: CC_CORE_CACHE_UPLOAD_URL
+              value: https://dev-upload-cccore.vbee.ai
+            - name: KAFKA_BROKERS
+              value: "210.211.108.238:50085"
+            - name: KAFKA_CLIENT_ID
+              value: "smartvoice-backend"
+            - name: KAFKA_GROUP_ID
+              value: "smartvoice-backend"
+            - name: GOOGLE_CLIENT_EMAIL
+              value: "aicc-vbee-google-sheet@tts-online-204510.iam.gserviceaccount.com"
+            - name: RECORDING_MESSAGE_GOOGLE_SHEET_ID
+              value: "1dWknyoqGh4TngpoOCnOVqZNdHVfsNpXXJPLIgVkEO1M"
+            - name: RECORDING_MESSAGE_GOOGLE_SHEET_NAME
+              value: "Mapping Audio Text"
+            - name: SAVE_RECORDING_MESSAGE_INTERVAL
+              value: "5"
+            - name: OPEN_AI_URL
+              value: https://api.openai.com
+            - name: ADVANCE_PREDICT_CALL_LABEL
+              value: "false"
+            - name: SMARTVOICE_URL
+              value: "https://dev-smartvoice.gmobile.ai"
+            - name: SMARTVOICE_TTS_URL
+              value: http://smartvoice-backend-tts-cluster-ip.smartvoice.svc.cluster.local:80/api/v1/cache
+            - name: SMARTVOICE_ENV
+              value: "dev"
+            - name: SMARTVOICE_AUDIO_URL
+              value: "https://s3-dev-smartcall.vnlotus.ai"
+            - name: AES_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xcall-backend-secrets
+                  key: AES_SECRET_KEY
+            - name: TELEGRAM_BOT_TOKEN
+              value: "8000680500:AAHUqO7OcVJN-Z5wCPuMi5PL8ncZGjZn4v0"
+            - name: TELEGRAM_GROUP_ID
+              value: "-1003208459522"
+            - name: VIETTEL_SMS_URL
+              value: "test"
+            - name: APPLICATION_NAME
+              value: "XCall"
+            - name: CRON_JOB_SYNC_SNAPSHOT_DAILY_STATS_SUBS
+              value: "*/5 * * * *"
+            - name: CRON_JOB_SYNC_SNAPSHOT_DAILY_STATS_CALL
+              value: "*/5 * * * *"
+            - name: REFRESH_JWT_EXPIRES_TIME
+              value: "30d"

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xcall-frontend
+  namespace: learn
+  labels:
+    app: xcall-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: xcall-frontend
+  template:
+    metadata:
+      labels:
+        app: xcall-frontend
+    spec:
+      containers:
+        - name: xcall-frontend
+          image: tuan1542/xcall-frontend:v1.0.4
+          ports:
+            - containerPort: 3000
