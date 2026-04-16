@@ -5,8 +5,8 @@ metadata:
   namespace: learn
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    traefik.ingress.kubernetes.io/router.tls: "false"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - xcall.local
